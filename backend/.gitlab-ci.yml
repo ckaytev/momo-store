@@ -16,6 +16,7 @@ stages:
 
 build-code-job:
   stage: build
+  image: golang:1.17
   variables:
     GOPATH: $CI_PROJECT_DIR/backend/.go
     CGO_ENABLED: "0"

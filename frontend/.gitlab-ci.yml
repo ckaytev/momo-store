@@ -52,7 +52,7 @@ unit-test:
   stage: test
   script:
     - cd frontend
-    - sudo npm install --cache .npm --prefer-offline
+    - npm install --cache .npm --prefer-offline
     - npm run unit
   cache:
     key: $CI_COMMIT_REF_SLUG
