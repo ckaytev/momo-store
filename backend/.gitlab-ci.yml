@@ -1,0 +1,115 @@
+include:
+  - template: Security/SAST.gitlab-ci.yml
+  - project: 'templates/ci'
+    file: 'DockerInDockerTemplate.yml'
+
+variables:
+  VERSION: 1.0.${CI_PIPELINE_ID}
+  # SAST_EXCLUDED_ANALYZERS: "eslint,nodejs-scan"
+
+stages:
+  - build
+  - build_image
+  - test
+  - release
+  - deploy
+
+build-code-job:
+  stage: build
+  variables:
+    GOPATH: $CI_PROJECT_DIR/backend/.go
+    CGO_ENABLED: "0"
+    GIT_DEPTH: "0"
+  before_script:
+    - mkdir -p backend/.go
+  script:
+    - cd backend/cmd/api/
+    - go build -o $CI_PROJECT_DIR/backend/ .
+    - mkdir -p ../momo-store-${VERSION}
+    - mv api ../momo-store-${VERSION}/
+  cache:
+    key: $CI_COMMIT_REF_SLUG
+    paths:
+      - backend/.go/pkg/mod/
+  artifacts:
+    paths:
+      - momo-store-${VERSION}/api
+
+build-backend-docker:
+  stage: build_image
+  image:
+    name: gcr.io/kaniko-project/executor:debug
+    entrypoint: [""]
+  script:
+    - mv momo-store-${VERSION}/api backend/
+    - mkdir -p /kaniko/.docker
+    - echo "{\"auths\":{\"${CI_REGISTRY}\":{\"auth\":\"$(printf "%s:%s" "${CI_REGISTRY_USER}" "${CI_REGISTRY_PASSWORD}" | base64 | tr -d '\n')\"}}}" > /kaniko/.docker/config.json
+    - >-
+      /kaniko/executor
+      --context ${CI_PROJECT_DIR}/backend
+      --dockerfile ${CI_PROJECT_DIR}/backend/Dockerfile
+      --destination ${CI_REGISTRY_IMAGE}/momo-backend:${CI_COMMIT_SHA}
+      --build-arg VERSION=${VERSION}
+      --cache=true
+      --cache-copy-layers
+
+unit-test:
+  stage: test
+  variables:
+    GOPATH: $CI_PROJECT_DIR/backend/.go
+    GIT_DEPTH: "0"
+  script:
+    - cd backend
+    - go test -v ./... 
+  cache:
+    key: $CI_COMMIT_REF_SLUG
+    paths:
+      - backend/.go/pkg/mod/
+
+sonarqube-backend-sast:
+  stage: test
+  image: sonarsource/sonar-scanner-cli:latest
+  variables:
+    GIT_DEPTH: "0"
+  cache:
+    key: "${CI_JOB_NAME}"
+    paths:
+      - .sonar/cache
+  script:
+    - cd backend
+    - sonar-scanner -Dsonar.qualitygate.wait=true -Dsonar.host.url=${SONAR_URL} -Dsonar.login=${SONAR_LOGIN} -Dsonar.projectKey=${BACKEND_KEY}
+  allow_failure: true
+
+upload-backend-latest:
+  variables:
+    GIT_STRATEGY: none
+  image: docker:20.10.12-dind-rootless
+  stage: release
+  before_script:
+    - until docker info; do sleep 1; done
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+  script:
+    - docker pull $CI_REGISTRY_IMAGE/momo-backend:$CI_COMMIT_SHA
+    - docker tag $CI_REGISTRY_IMAGE/momo-backend:$CI_COMMIT_SHA $CI_REGISTRY_IMAGE/momo-backend:latest
+    - docker push $CI_REGISTRY_IMAGE/momo-backend:latest
+
+deploy-backend:
+  stage: deploy
+  image: docker:20.10.17-dind
+  before_script:
+    - apk add openssh-client bash docker-compose
+    - eval $(ssh-agent -s)
+    - echo "$SSH_PRIVATE_KEY" | base64 -d | tr -d '\r' | ssh-add -
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - echo "$SSH_KNOWN_HOSTS" >> ~/.ssh/known_hosts
+    - chmod 644 ~/.ssh/known_hosts
+  script:
+    - docker context create remote --docker "host=ssh://${DEV_USER}@${DEV_HOST}"
+    - docker --context remote login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker-compose -H ssh://${DEV_USER}@${DEV_HOST} rm -f backend
+    - docker-compose -H ssh://${DEV_USER}@${DEV_HOST} pull backend
+    - docker-compose -H ssh://${DEV_USER}@${DEV_HOST} up -d backend
+  environment:
+    name: test_backend
+    url: http://{DEV_HOST}
