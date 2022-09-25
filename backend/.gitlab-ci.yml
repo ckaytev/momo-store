@@ -25,9 +25,9 @@ build-code-job:
     - mkdir -p backend/.go
   script:
     - cd backend/cmd/api/
-    - go build -o $CI_PROJECT_DIR/backend/ .
-    - mkdir -p ../momo-store-${VERSION}
-    - mv api ../momo-store-${VERSION}/
+    - go build .
+    - mkdir -p $CI_PROJECT_DIR/momo-store-${VERSION}
+    - mv api $CI_PROJECT_DIR/momo-store-${VERSION}/
   cache:
     key: $CI_COMMIT_REF_SLUG
     paths:

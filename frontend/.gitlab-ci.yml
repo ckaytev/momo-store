@@ -48,17 +48,6 @@ build-frontend-docker:
       --cache=true
       --cache-copy-layers
 
-unit-test:
-  stage: test
-  script:
-    - cd frontend
-    - npm install --cache .npm --prefer-offline
-    - npm run unit
-  cache:
-    key: $CI_COMMIT_REF_SLUG
-    paths:
-      - frontend/.npm/
-
 sonarqube-frontend-sast:
   stage: test
   image: sonarsource/sonar-scanner-cli:latest
