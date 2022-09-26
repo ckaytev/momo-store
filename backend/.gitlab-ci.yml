@@ -5,7 +5,7 @@ include:
 
 variables:
   VERSION: 1.0.${CI_PIPELINE_ID}
-  # SAST_EXCLUDED_ANALYZERS: "eslint,nodejs-scan"
+  SAST_EXCLUDED_ANALYZERS: "nodejs-scan"
 
 stages:
   - build
@@ -56,6 +56,7 @@ build-backend-docker:
 
 unit-test:
   stage: test
+  image: golang:1.17
   variables:
     GOPATH: $CI_PROJECT_DIR/backend/.go
     GIT_DEPTH: "0"
@@ -66,6 +67,15 @@ unit-test:
     key: $CI_COMMIT_REF_SLUG
     paths:
       - backend/.go/pkg/mod/
+
+gosec-sast:
+  before_script:
+    - |
+      cat <<EOF > ~/.netrc
+      machine gitlab.praktikum-services.ru
+      login $CI_DEPLOY_USER
+      password $CI_DEPLOY_PASSWORD
+      EOF
 
 sonarqube-backend-sast:
   stage: test

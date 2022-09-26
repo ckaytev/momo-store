@@ -9,7 +9,6 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-
     networks:
       - momo-store
     restart: always
@@ -24,5 +23,5 @@ services:
     restart: always
 
 networks:
-  sausage-store:
+  momo-store:
     name: momo-store
