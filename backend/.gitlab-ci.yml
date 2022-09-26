@@ -69,13 +69,12 @@ unit-test:
       - backend/.go/pkg/mod/
 
 gosec-sast:
-  before_script:
-    - |
-      cat <<EOF > ~/.netrc
-      machine gitlab.praktikum-services.ru
-      login $CI_DEPLOY_USER
-      password $CI_DEPLOY_PASSWORD
-      EOF
+  variables:
+    GOPATH: $CI_PROJECT_DIR/backend/.go
+  cache:
+    key: $CI_COMMIT_REF_SLUG
+    paths:
+      - backend/.go/pkg/mod/
 
 sonarqube-backend-sast:
   stage: test

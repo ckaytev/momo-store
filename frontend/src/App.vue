@@ -4,6 +4,7 @@
     <router-view v-if="$store.state.auth.checked"/>
     <div class="h-100" style="text-align:center" v-else>
       <Spinner size="8rem" thickness="1.25rem"/>
+    </div>
   </div>
 </template>
 
