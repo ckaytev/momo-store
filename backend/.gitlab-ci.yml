@@ -19,6 +19,7 @@ build-code-job:
   image: golang:1.17
   variables:
     GOPATH: $CI_PROJECT_DIR/backend/.go
+    GO111MODULE: "auto"
     CGO_ENABLED: "0"
     GIT_DEPTH: "0"
   before_script:
@@ -71,6 +72,7 @@ unit-test:
 gosec-sast:
   variables:
     GOPATH: $CI_PROJECT_DIR/backend/.go
+    GO111MODULE: "auto"
   before_script:
     - |
       cat <<EOF > ~/.netrc
