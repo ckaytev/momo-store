@@ -19,7 +19,6 @@ build-code-job:
   image: golang:1.17
   variables:
     GOPATH: $CI_PROJECT_DIR/backend/.go
-    GO111MODULE: "auto"
     CGO_ENABLED: "0"
     GIT_DEPTH: "0"
   before_script:
@@ -72,7 +71,6 @@ unit-test:
 gosec-sast:
   variables:
     GOPATH: $CI_PROJECT_DIR/backend/.go
-    GO111MODULE: "auto"
   before_script:
     - |
       cat <<EOF > ~/.netrc
@@ -80,6 +78,7 @@ gosec-sast:
       login $GITLAB_USER_LOGIN
       password $GITLAB_TOKEN
       EOF
+    - mv backend/.go/pkg/mod/ backend/.go/src/
   cache:
     key: $CI_COMMIT_REF_SLUG
     paths:
