@@ -12,6 +12,7 @@ stages:
   - build_image
   - test
   - release
+  - deploy-dev
   - deploy
 
 build-code-job:
@@ -104,8 +105,8 @@ upload-backend-latest:
     - docker tag $CI_REGISTRY_IMAGE/momo-backend:$CI_COMMIT_SHA $CI_REGISTRY_IMAGE/momo-backend:latest
     - docker push $CI_REGISTRY_IMAGE/momo-backend:latest
 
-deploy-backend:
-  stage: deploy
+deploy-to-test-backend:
+  stage: deploy-dev
   image: docker:20.10.17-dind
   before_script:
     - apk add openssh-client bash docker-compose
