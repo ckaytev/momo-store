@@ -1,8 +1,8 @@
 <template>
   <router-link class="mx-0 mx-sm-2 my-2 my-sm-0" to="/cart">
-    <i class="fas fa-shopping-cart">
+    <em class="fas fa-shopping-cart">
       <span class="badge badge-pill" v-if="$store.getters.numberOfItemsInCart">{{ $store.getters.numberOfItemsInCart }}</span>
-    </i>
+    </em>
   </router-link>
 </template>
 
