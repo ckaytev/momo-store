@@ -1,4 +1,4 @@
-FROM alpine:3.16
+FROM alpine/curl:3.14
 COPY api /bin/api
 EXPOSE 8081
 ENTRYPOINT ["/bin/api"]
