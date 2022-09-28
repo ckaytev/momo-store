@@ -132,4 +132,4 @@ deploy-to-test-backend:
     - docker-compose -H ssh://${DEV_USER}@${DEV_HOST} up -d backend
   environment:
     name: test_backend
-    url: http://{DEV_HOST}
+    url: http://${DEV_HOST}

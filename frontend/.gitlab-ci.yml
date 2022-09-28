@@ -95,4 +95,4 @@ deploy-to-test-frontend:
     - docker-compose -H ssh://${DEV_USER}@${DEV_HOST} up -d frontend
   environment:
     name: test_frontend
-    url: http://{DEV_HOST}
+    url: http://${DEV_HOST}
