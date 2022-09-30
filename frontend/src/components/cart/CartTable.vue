@@ -1,5 +1,5 @@
 <template>
-  <table class="table table-hover align-middle">
+  <table class="table table-hover align-middle" aria-label="bucket">
     <thead>
       <tr>
         <th scope="col">Название</th>

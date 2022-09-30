@@ -2,9 +2,9 @@
   <Navbar />
   <div class="mt-3 content-wrapper">
     <router-view v-if="$store.state.auth.checked"/>
-    <Center class="h-100" v-else>
+    <div class="h-100" style="text-align:center" v-else>
       <Spinner size="8rem" thickness="1.25rem"/>
-    </Center>
+    </div>
   </div>
 </template>
 

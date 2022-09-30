@@ -5,7 +5,7 @@
       <Alert v-if="error" v-model="error" class="alert-danger"/>
     </div>
 
-    <Center>
+    <div style="text-align:center">
 
       <Spinner 
         v-if="loading"
@@ -38,7 +38,7 @@
         </form>
       </div>
 
-    </Center>
+    </div>
 
     <div></div>
   </div>
