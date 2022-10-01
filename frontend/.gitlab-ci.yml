@@ -88,6 +88,7 @@ deploy-to-test-frontend:
     - echo "$SSH_KNOWN_HOSTS" >> ~/.ssh/known_hosts
     - chmod 644 ~/.ssh/known_hosts
   script:
+    - scp ./frontend/nginx.conf ${DEV_USER}@${DEV_HOST}:.
     - docker context create remote --docker "host=ssh://${DEV_USER}@${DEV_HOST}"
     - docker --context remote login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - docker-compose -H ssh://${DEV_USER}@${DEV_HOST} rm -f frontend
