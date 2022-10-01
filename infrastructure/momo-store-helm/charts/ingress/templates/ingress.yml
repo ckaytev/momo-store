@@ -1,0 +1,14 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ .Chart.Name }}
+spec:
+  ingressClassName: "nginx"
+  tls:
+    - hosts:
+        - {{ .Values.host | quote }}
+  rules:
+  - host: {{ .Values.host | quote }}
+    http:
+{{ toYaml .Values.paths | indent 6 }} 

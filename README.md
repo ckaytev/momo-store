@@ -18,3 +18,8 @@ go test -v ./...
 
 terraform init -backend-config=backend.tfvars
 terraform apply -var-file="secret.tfvars"
+
+
+helm upgrade --install --atomic momo-secrets ./infrastructure/momo-store-helm/charts/secrets/
+helm upgrade --install --atomic -f ./infrastructure/momo-store-helm/values.yaml momo-backend ./infrastructure/momo-store-helm/charts/backend/
+helm upgrade --install --atomic -f ./infrastructure/momo-store-helm/values.yaml momo-frontend ./infrastructure/momo-store-helm/charts/frontend/

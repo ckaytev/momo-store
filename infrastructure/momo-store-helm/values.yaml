@@ -1,0 +1,3 @@
+repo: gitlab.praktikum-services.ru:5050/antona-zateyev/momo-store/
+imagePullPolicy: Always
+revisionHistoryLimit: 15

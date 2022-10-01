@@ -1,0 +1,52 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Chart.Name }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+{{- include "common_labels" . | indent 4 }}
+spec:
+  revisionHistoryLimit: {{ .Values.revisionHistoryLimit }}
+  replicas: {{ .Values.replicas }}
+  strategy:
+{{ toYaml .Values.strategy | indent 4 }}
+  selector:
+    matchLabels:
+      app: {{ .Chart.Name }}
+  template:
+    metadata:
+      annotations:
+{{ toYaml .Values.annotations | indent 8 }}
+      labels:
+        app: {{ .Chart.Name }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: {{ .Values.repo }}{{ .Values.image.project }}:{{ .Values.image.tag }}
+          imagePullPolicy: {{ .Values.imagePullPolicy }}
+          ports:
+            - name: {{ .Chart.Name }}
+              containerPort: {{ .Values.service.port }}
+          volumeMounts:
+            - name: nginx-conf
+              mountPath: /etc/nginx/conf.d/default.conf
+              subPath: nginx.conf
+              readOnly: true
+          resources:
+{{ toYaml .Values.resources | indent 12 }}
+        - name: exporter
+          image: {{ .Values.prometheus_exporter }}
+          args:
+            - -nginx.scrape-uri=http://127.0.0.1:{{ .Values.service.port }}/stub_status
+      volumes:
+        - name: nginx-conf
+          configMap:
+            name: nginx-conf
+            items:
+              - key: nginx.conf
+                path: nginx.conf
+      imagePullSecrets:
+        - name: docker-config-secret
+      nodeSelector:
+        {{ toYaml .Values.nodeSelector }}
