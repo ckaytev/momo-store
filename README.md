@@ -15,3 +15,6 @@ NODE_ENV=production VUE_APP_API_URL=http://localhost:8081 npm run serve
 go run ./cmd/api
 go test -v ./... 
 ```
+
+terraform init -backend-config=backend.tfvars
+terraform apply -var-file="secret.tfvars"
