@@ -13,14 +13,14 @@ func NewFakeDumplingsStore() (dumplings.Store, error) {
 			Name:        "Пельмени",
 			Description: "С говядиной",
 			Price:       5.00,
-			Image:       "https://res.cloudinary.com/sugrobov/image/upload/v1651932687/repos/momos/8dee5a92281746aa887d6f19cf9fdcc7.jpg",
+			Image:       "https://storage.yandexcloud.net/momo-store-zateevant/momos/8dee5a92281746aa887d6f19cf9fdcc7.jpg",
 		},
 		{
 			ID:          2,
 			Name:        "Хинкали",
 			Description: "Со свининой",
 			Price:       3.50,
-			Image:       "https://res.cloudinary.com/sugrobov/image/upload/v1651932687/repos/momos/50b583271fa0409fb3d8ffc5872e99bb.jpg",
+			Image:       "https://storage.yandexcloud.net/momo-store-zateevant/momos/50b583271fa0409fb3d8ffc5872e99bb.jpg",
 		},
 		{
 			ID:          3,
@@ -69,14 +69,14 @@ func NewFakeDumplingsStore() (dumplings.Store, error) {
 			Name:        "Вонтоны",
 			Description: "С креветками",
 			Price:       4.10,
-			Image:       "https://res.cloudinary.com/sugrobov/image/upload/v1651932687/repos/momos/8dee5a92281746aa887d6f19cf9fdcc7.jpg",
+			Image:       "https://storage.yandexcloud.net/momo-store-zateevant/momos/8dee5a92281746aa887d6f19cf9fdcc7.jpg",
 		},
 		{
 			ID:          10,
 			Name:        "Баоцзы",
 			Description: "С капустой",
 			Price:       4.20,
-			Image:       "https://res.cloudinary.com/sugrobov/image/upload/v1651932687/repos/momos/50b583271fa0409fb3d8ffc5872e99bb.jpg",
+			Image:       "https://storage.yandexcloud.net/momo-store-zateevant/momos/50b583271fa0409fb3d8ffc5872e99bb.jpg",
 		},
 		{
 			ID:          11,
