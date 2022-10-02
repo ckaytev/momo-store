@@ -1,9 +1,16 @@
-host: "05-antona-zateev.k8s.momo-store.tech"
+host: "momo-store.mooo.com"
 paths:
+# - path: /app/
+#   pathType: Prefix
+#   backend:
+#     service:
+#       name: frontend
+#       port:
+#         number: 80
 - path: /
   pathType: Prefix
   backend:
     service:
-      name: frontend
+      name: prometheus-grafana
       port:
         number: 80
