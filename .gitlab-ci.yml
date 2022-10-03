@@ -20,3 +20,13 @@ backend:
   only:
     changes:
       - backend/**/*
+
+helm:
+  stage: module-pipelines
+  trigger:
+    include:
+      - "/infrastructure/momo-store-helm/.gitlab-ci.yml"
+    strategy: depend
+  only:
+    changes:
+      - infrastructure/momo-store-helm/**/*

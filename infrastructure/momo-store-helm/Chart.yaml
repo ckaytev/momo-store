@@ -8,17 +8,24 @@ version: 0.1.0
 appVersion: "latest"
 
 dependencies:
+  - name: secrets
+    version: 0.1.0
   - name: backend
     version: 0.1.0
   - name: frontend
     version: 0.1.0
-  - name: secrets
-    version: 0.1.0
-  - name: ingress
-    version: 0.1.0  
   - name: ingress-nginx
-    version: v1.3.1
+    version: 4.2.5
     repository: https://kubernetes.github.io/ingress-nginx
   - name: cert-manager
     version: v1.9.1
     repository: https://charts.jetstack.io
+  - name: kube-prometheus-stack
+    version: 40.3.1
+    repository: https://prometheus-community.github.io/helm-charts
+  - name: loki-stack
+    version: v2.1.2
+    repository: https://grafana.github.io/loki/charts
+  - name: ingress
+    version: 0.1.0 
+

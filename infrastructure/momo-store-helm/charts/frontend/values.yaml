@@ -1,6 +1,5 @@
 image: 
   project: momo-frontend
-  tag: latest
 prometheus_exporter: nginx/nginx-prometheus-exporter:0.10.0
 annotations:
   prometheus.io/path: /metrics

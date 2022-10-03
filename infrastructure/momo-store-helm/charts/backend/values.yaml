@@ -1,6 +1,5 @@
 image: 
   project: momo-backend
-  tag: latest
 annotations:
   prometheus.io/path: /metrics
   prometheus.io/port: "8081"

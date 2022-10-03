@@ -10,11 +10,28 @@ metadata:
 spec:
   ingressClassName: "nginx"
   tls:
-    - hosts:
-      - {{ .Values.host | quote }}
-      secretName: letsencrypt
+  - hosts:
+    - {{ .Values.app.host }}
+    - {{ .Values.grafana.host }}
+    secretName: letsencrypt
   rules:
-  - host: {{ .Values.host | quote }}
-    http:
-      paths:
-{{ toYaml .Values.paths | indent 6 }} 
+    - host: {{ .Values.app.host }}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ .Values.app.backend.name }}
+                port:
+                  number: {{ .Values.app.backend.port }}
+    - host: {{ .Values.grafana.host }}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ .Values.grafana.backend.name }}
+                port:
+                  number: {{ .Values.grafana.backend.port }}

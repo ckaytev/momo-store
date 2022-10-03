@@ -1,0 +1,35 @@
+stages:
+  - release
+  - deploy
+
+release-to-nexus:
+  stage: release
+  image: alpine/helm:3.9.3
+  script:
+    - cd infrastructure/momo-store-helm
+    - helm package --dependency-update .
+    - curl -u $NEXUS_USER:$NEXUS_PASS $NEXUS_HELM_REPO --upload-file *.tgz
+
+deploy-to-kubernetes:
+  stage: deploy
+  image: alpine/helm:3.9.3
+  before_script:
+    - mkdir -p ~/.kube
+    - echo "$KUBE_CONFIG" | base64 -d > ~/.kube/config
+    - apk add jq
+  script:
+    - export BACKEND_VERSION=$(helm get values momo-backend -o json | jq .image.tag)
+    - export FRONTEND_VERSION=$(helm get values momo-backend -o json | jq .image.tag)
+    - cd infrastructure/momo-store-helm
+    - helm upgrade --install --atomic momo-secrets charts/secrets/
+    - helm upgrade --install --atomic -f values.yaml momo-backend charts/backend/ --set image.tag=$BACKEND_VERSION
+    - helm upgrade --install --atomic -f values.yaml momo-frontend charts/frontend/ --set image.tag=$FRONTEND_VERSION
+    - helm upgrade --install --atomic ingress-nginx ingress-nginx/ingress-nginx
+    - helm upgrade --install --atomic cert-manager jetstack/cert-manager --namespace momo-store --set installCRDs=true
+    - helm upgrade --install --atomic prometheus -f  values.yaml prometheus-community/kube-prometheus-stack
+    - helm upgrade --install --atomic loki loki/loki-stack
+    - helm upgrade --install --atomic ingress charts/ingress/
+    - rm ~/.kube/config
+  environment:
+    name: momo-store
+    url: https://momo-store.mooo.com/

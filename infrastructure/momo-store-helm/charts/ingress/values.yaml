@@ -1,16 +1,11 @@
-host: "momo-store.mooo.com"
-paths:
-# - path: /app/
-#   pathType: Prefix
-#   backend:
-#     service:
-#       name: frontend
-#       port:
-#         number: 80
-- path: /
-  pathType: Prefix
+app:
+  host: momo-store.mooo.com
   backend:
-    service:
-      name: prometheus-grafana
-      port:
-        number: 80
+    name: frontend
+    port: 80
+
+grafana: 
+  host: grafana.momo-store.mooo.com
+  backend: 
+    name: prometheus-grafana
+    port: 80

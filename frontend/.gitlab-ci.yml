@@ -44,7 +44,7 @@ build-frontend-docker:
       /kaniko/executor
       --context ${CI_PROJECT_DIR}/frontend
       --dockerfile ${CI_PROJECT_DIR}/frontend/Dockerfile
-      --destination ${CI_REGISTRY_IMAGE}/momo-frontend:${CI_COMMIT_SHA}
+      --destination ${CI_REGISTRY_IMAGE}/momo-frontend:${VERSION}
       --build-arg VERSION=${VERSION}
       --cache=true
       --cache-copy-layers
@@ -72,8 +72,8 @@ upload-frontend-latest:
     - until docker info; do sleep 1; done
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
   script:
-    - docker pull $CI_REGISTRY_IMAGE/momo-frontend:$CI_COMMIT_SHA
-    - docker tag $CI_REGISTRY_IMAGE/momo-frontend:$CI_COMMIT_SHA $CI_REGISTRY_IMAGE/momo-frontend:latest
+    - docker pull $CI_REGISTRY_IMAGE/momo-frontend:$VERSION
+    - docker tag $CI_REGISTRY_IMAGE/momo-frontend:$VERSION $CI_REGISTRY_IMAGE/momo-frontend:latest
     - docker push $CI_REGISTRY_IMAGE/momo-frontend:latest
 
 deploy-to-test-frontend:
@@ -97,3 +97,18 @@ deploy-to-test-frontend:
   environment:
     name: test_frontend
     url: http://${DEV_HOST}
+
+deploy-to-kubernetes-frontend:
+  stage: deploy
+  image: alpine/helm:3.9.3
+  before_script:
+    - mkdir -p ~/.kube
+    - echo "$KUBE_CONFIG" | base64 -d > ~/.kube/config
+  script:
+    - cd infrastructure/momo-store-helm
+    - helm upgrade --install --atomic -f values.yaml momo-frontend charts/frontend/ --set image.tag=$VERSION
+    - rm ~/.kube/config
+  when: manual
+  environment:
+    name: prod-frontend
+    url: https://momo-store.mooo.com/
