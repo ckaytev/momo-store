@@ -1,7 +1,7 @@
 version: "3.5"
 services:
   backend:
-    image: ${CI_REGISTRY_IMAGE}/momo-backend:${CI_COMMIT_SHA}
+    image: ${CI_REGISTRY_IMAGE}/momo-backend:${VERSION}
     container_name: backend
     expose:
       - "8081"
@@ -15,7 +15,7 @@ services:
     restart: always
 
   frontend:
-    image: ${CI_REGISTRY_IMAGE}/momo-frontend:${CI_COMMIT_SHA}
+    image: ${CI_REGISTRY_IMAGE}/momo-frontend:${VERSION}
     container_name: frontend
     ports:
       - "80:80"
