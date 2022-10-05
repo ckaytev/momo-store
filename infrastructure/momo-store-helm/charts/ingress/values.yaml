@@ -7,5 +7,5 @@ app:
 grafana: 
   host: grafana.momo-store.mooo.com
   backend: 
-    name: prometheus-grafana
+    name: momo-store-grafana
     port: 80
