@@ -141,8 +141,9 @@ deploy-to-kubernetes-backend:
     - mkdir -p ~/.kube
     - echo "$KUBE_CONFIG" | base64 -d > ~/.kube/config
   script:
+    - export FRONTEND_VERSION=$(helm get values -n momo-store momo-store -o json | jq -r .frontend.image.tag)
     - cd infrastructure/momo-store-helm
-    - helm upgrade --dependency-update --install --atomic momo-store . --set backend.image.tag=$VERSION --reuse-values
+    - helm upgrade --dependency-update --install --atomic momo-store . --set backend.image.tag=$VERSION --set frontend.image.tag=$FRONTEND_VERSION
     - rm ~/.kube/config
   when: manual
   environment:
