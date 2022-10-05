@@ -28,6 +28,11 @@ helm upgrade --install --atomic -f values.yaml momo-backend charts/backend/
 helm upgrade --install --atomic -f values.yaml momo-frontend charts/frontend/
 helm upgrade --install --atomic ingress-nginx ingress-nginx/ingress-nginx
 helm upgrade --install --atomic cert-manager jetstack/cert-manager --namespace momo-store --set installCRDs=true
-helm upgrade --install --atomic prometheus -f  values.yaml prometheus-community/kube-prometheus-stack
+helm upgrade --install --atomic prometheus -f values.yaml prometheus-community/kube-prometheus-stack
 helm upgrade --install --atomic loki loki/loki-stack
 helm upgrade --install --atomic ingress charts/ingress/
+
+cd infrastructure/momo-store-helm/
+helm dependency build
+helm upgrade --install --atomic momo-store jetstack/cert-manager --set installCRDs=true
+helm upgrade --install --atomic momo-store . --set backend.image.tag=latest --set frontend.image.tag=latest

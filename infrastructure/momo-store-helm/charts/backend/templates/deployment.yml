@@ -14,7 +14,7 @@ metadata:
     app.kubernetes.io/part-of: momo-store
     env: {{ .Values.environment }}
 spec:
-  revisionHistoryLimit: {{ .Values.revisionHistoryLimit }}
+  revisionHistoryLimit: {{ .Values.global.revisionHistoryLimit }}
   replicas: {{ .Values.replicas }}
   strategy:
 {{ toYaml .Values.strategy | indent 4 }} 
@@ -30,8 +30,8 @@ spec:
     spec:
       containers:
         - name: {{ .Chart.Name }}
-          image: {{ .Values.repo }}{{ .Values.image.project }}:{{ .Values.image.tag }}
-          imagePullPolicy: {{ .Values.imagePullPolicy }}
+          image: {{ .Values.global.repo }}{{ .Values.image.project }}:{{ .Values.image.tag }}
+          imagePullPolicy: {{ .Values.global.imagePullPolicy }}
           ports:
             - name: {{ .Chart.Name }}
               containerPort: {{ .Values.service.port }}
@@ -40,4 +40,4 @@ spec:
           livenessProbe:
 {{ toYaml .Values.livenessProbe | indent 12 }}
       imagePullSecrets:
-        - name: docker-config-secret
+        - name: docker-config-secret-backend

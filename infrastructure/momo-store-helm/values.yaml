@@ -1,7 +1,9 @@
 # backend and frontend subchart
-repo: gitlab.praktikum-services.ru:5050/antona-zateyev/momo-store/
-imagePullPolicy: Always
-revisionHistoryLimit: 15
+global:
+  repo: gitlab.praktikum-services.ru:5050/antona-zateyev/momo-store/
+  imagePullPolicy: Always
+  revisionHistoryLimit: 15
+  dockerconfigjson: ewoJImF1dGhzIjogewoJCSJnaXRsYWIucHJha3Rpa3VtLXNlcnZpY2VzLnJ1OjUwNTAiOiB7CgkJCSJhdXRoIjogIllXNTBiMjVoTFhwaGRHVjVaWFk2TlVnNVN5RXFkR289IgoJCX0KCX0KfQ==
 
 # cert-manager subchart
 cert-manager:

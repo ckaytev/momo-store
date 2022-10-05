@@ -21,14 +21,7 @@ deploy-to-kubernetes:
     - export BACKEND_VERSION=$(helm get values momo-backend -o json | jq .image.tag)
     - export FRONTEND_VERSION=$(helm get values momo-backend -o json | jq .image.tag)
     - cd infrastructure/momo-store-helm
-    - helm upgrade --install --atomic momo-secrets charts/secrets/
-    - helm upgrade --install --atomic -f values.yaml momo-backend charts/backend/ --set image.tag=$BACKEND_VERSION
-    - helm upgrade --install --atomic -f values.yaml momo-frontend charts/frontend/ --set image.tag=$FRONTEND_VERSION
-    - helm upgrade --install --atomic ingress-nginx ingress-nginx/ingress-nginx
-    - helm upgrade --install --atomic cert-manager jetstack/cert-manager --namespace momo-store --set installCRDs=true
-    - helm upgrade --install --atomic prometheus -f  values.yaml prometheus-community/kube-prometheus-stack
-    - helm upgrade --install --atomic loki loki/loki-stack
-    - helm upgrade --install --atomic ingress charts/ingress/
+    - helm upgrade --install --atomic momo-store . --set backend.image.tag=$BACKEND_VERSION --set frontend.image.tag=$FRONTEND_VERSION
     - rm ~/.kube/config
   environment:
     name: momo-store
