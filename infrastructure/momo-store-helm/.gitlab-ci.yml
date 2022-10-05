@@ -18,8 +18,8 @@ deploy-to-kubernetes:
     - echo "$KUBE_CONFIG" | base64 -d > ~/.kube/config
     - apk add jq
   script:
-    - export BACKEND_VERSION=$(helm get values -n momo-store momo-store -o json | jq .backend.image.tag)
-    - export FRONTEND_VERSION=$(helm get values -n momo-store momo-store -o json | jq .frontend.image.tag)
+    - export BACKEND_VERSION=$(helm get values -n momo-store momo-store -o json | jq -r .backend.image.tag)
+    - export FRONTEND_VERSION=$(helm get values -n momo-store momo-store -o json | jq -r .frontend.image.tag)
     - cd infrastructure/momo-store-helm
     - helm upgrade --dependency-update --install --atomic -n momo-store momo-store . --set backend.image.tag=$BACKEND_VERSION --set frontend.image.tag=$FRONTEND_VERSION
     - rm ~/.kube/config
