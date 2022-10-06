@@ -1,0 +1,32 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-conf
+data:
+  nginx.conf: |
+    server {
+
+      listen {{ .Values.service.port }};
+
+      location / {
+        root   /usr/share/nginx/html;
+        index  index.html;
+        try_files $uri $uri/ /index.html;
+      }
+      
+      error_page   500 502 503 504  /50x.html;
+      location = /50x.html {
+        root   /usr/share/nginx/html;
+      }
+
+      location ~ ^/(categories|products|auth|metrics)/ {
+        proxy_pass http://{{ .Values.proxy.host }}:{{ .Values.proxy.port }};
+      }
+
+      location /stub_status {
+        allow 127.0.0.1;
+        deny all;
+        stub_status on;
+      }
+    }

@@ -34,7 +34,7 @@ export default defineComponent({
     left: -12px;
 
     text-align: center;
-    color: white;
+    color: black;
     display:block;
     border-radius:50%;
 

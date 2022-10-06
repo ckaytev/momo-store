@@ -1,0 +1,28 @@
+stages:
+  - release
+  - deploy
+
+release-to-nexus:
+  stage: release
+  image: alpine/helm:3.9.3
+  script:
+    - cd infrastructure/momo-store-helm
+    - helm package --dependency-update .
+    - curl -u $NEXUS_USER:$NEXUS_PASS $NEXUS_HELM_REPO --upload-file *.tgz
+
+deploy-to-kubernetes:
+  stage: deploy
+  image: alpine/helm:3.9.3
+  before_script:
+    - mkdir -p ~/.kube
+    - echo "$KUBE_CONFIG" | base64 -d > ~/.kube/config
+    - apk add jq
+  script:
+    - export BACKEND_VERSION=$(helm get values -n momo-store momo-store -o json | jq -r .backend.image.tag)
+    - export FRONTEND_VERSION=$(helm get values -n momo-store momo-store -o json | jq -r .frontend.image.tag)
+    - cd infrastructure/momo-store-helm
+    - helm upgrade --dependency-update --install --atomic -n momo-store momo-store . --set backend.image.tag=$BACKEND_VERSION --set frontend.image.tag=$FRONTEND_VERSION
+    - rm ~/.kube/config
+  environment:
+    name: momo-store
+    url: https://momo-store.mooo.com/

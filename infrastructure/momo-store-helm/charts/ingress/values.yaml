@@ -1,0 +1,11 @@
+app:
+  host: momo-store.mooo.com
+  backend:
+    name: frontend
+    port: 80
+
+grafana: 
+  host: grafana.momo-store.mooo.com
+  backend: 
+    name: momo-store-grafana
+    port: 80
