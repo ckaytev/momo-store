@@ -4,15 +4,17 @@ kind: Ingress
 metadata:
   name: {{ .Chart.Name }}
   annotations:
-    cert-manager.io/cluster-issuer: "letsencrypt"
+    kubernetes.io/ingress.class: nginx
+    cert-manager.io/cluster-issuer: letsencrypt
     acme.cert-manager.io/http01-edit-in-place: "true"
 spec:
-  ingressClassName: "nginx"
   tls:
   - hosts:
     - {{ .Values.app.host }}
+    secretName: tls-secret-app
+  - hosts:
     - {{ .Values.grafana.host }}
-    secretName: letsencrypt
+    secretName: tls-secret-grafana
   rules:
     - host: {{ .Values.app.host }}
       http:

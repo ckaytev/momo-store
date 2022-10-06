@@ -5,11 +5,6 @@ global:
   revisionHistoryLimit: 15
   dockerconfigjson: ewoJImF1dGhzIjogewoJCSJnaXRsYWIucHJha3Rpa3VtLXNlcnZpY2VzLnJ1OjUwNTAiOiB7CgkJCSJhdXRoIjogIllXNTBiMjVoTFhwaGRHVjVaWFk2TlVnNVN5RXFkR289IgoJCX0KCX0KfQ==
 
-# cert-manager subchart
-cert-manager:
-  namespace: momo-store
-  installCRDs: true
-
 # prometheus-community/kube-prometheus-stack subchart
 kube-prometheus-stack:
   prometheus:
