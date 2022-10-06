@@ -47,7 +47,7 @@ go test -v ./...
 
 - клонировать репозиторий на машину с установленным terraform
 - через консоль Yandex Cloud создать сервисный аккаунт с ролью `editor`, получить статический ключ доступа, сохранить секретный ключ в файле `infrastructure/terraform/backend.tfvars`
-- получить [iam-token](https://cloud.yandex.ru/docs/iam/operations/iam-token/create) 
+- получить [iam-token](https://cloud.yandex.ru/docs/iam/operations/iam-token/create), сохранить в файле `infrastructure/terraform/secret.tfvars`
 - через консоль Yandex Cloud создать Object Storage, внести параметры подключения в файл `infrastructure/terraform/provider.tf`
 - выполнить следующие комманды:
 
