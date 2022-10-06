@@ -73,7 +73,7 @@ helm upgrade --install --atomic -n momo-store cert-manager jetstack/cert-manager
 helm dependency build
 helm upgrade --install --atomic -n momo-store momo-store . --set backend.image.tag=latest --set frontend.image.tag=latest
 
-#Посмотреть IP load balancer, прописать А-записи для приложения и мониторинга
+# смотрим IP load balancer, прописываем А-записи для приложения и мониторинга
 kubectl get svc
 ```
 
