@@ -20,7 +20,7 @@ data:
         root   /usr/share/nginx/html;
       }
 
-      location ~ ^/(categories|products|auth|metrics)/ {
+      location ~ ^/(categories|products|auth|metrics|orders)/ {
         proxy_pass http://{{ .Values.proxy.host }}:{{ .Values.proxy.port }};
       }
 

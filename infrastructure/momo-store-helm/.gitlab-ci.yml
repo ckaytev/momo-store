@@ -23,6 +23,4 @@ deploy-to-kubernetes:
     - cd infrastructure/momo-store-helm
     - helm upgrade --dependency-update --install --atomic -n momo-store momo-store . --set backend.image.tag=$BACKEND_VERSION --set frontend.image.tag=$FRONTEND_VERSION
     - rm ~/.kube/config
-  environment:
-    name: momo-store
-    url: https://momo-store.mooo.com/
+
