@@ -40,4 +40,4 @@ spec:
           livenessProbe:
 {{ toYaml .Values.livenessProbe | indent 12 }}
       imagePullSecrets:
-        - name: docker-config-secret-backend
+        - name: docker-config-secret

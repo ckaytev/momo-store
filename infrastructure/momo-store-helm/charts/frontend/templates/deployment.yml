@@ -54,4 +54,4 @@ spec:
               - key: nginx.conf
                 path: nginx.conf
       imagePullSecrets:
-        - name: docker-config-secret-frontend
+        - name: docker-config-secret

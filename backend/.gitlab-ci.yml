@@ -132,7 +132,6 @@ deploy-to-test-backend:
     - docker-compose -H ssh://${DEV_USER}@${DEV_HOST} up -d backend
   environment:
     name: test_backend
-    url: http://${DEV_HOST}
 
 deploy-to-kubernetes-backend:
   stage: deploy
@@ -147,4 +146,3 @@ deploy-to-kubernetes-backend:
   when: manual
   environment:
     name: prod-backend
-    url: https://momo-store.mooo.com/

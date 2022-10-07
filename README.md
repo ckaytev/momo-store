@@ -69,6 +69,8 @@ helm repo add jetstack https://charts.jetstack.io
 helm repo update
 helm upgrade --install --atomic -n momo-store cert-manager jetstack/cert-manager --version v1.9.1 --set installCRDs=true
 
+# сохраняем креды для docker-registry
+kubectl create secret generic -n momo-store docker-config-secret --from-file=.dockerconfigjson="/home/user/.docker/config.json" --type=kubernetes.io/dockerconfigjson 
 # устанавливаем приложение, указав версии backend и frontend
 helm dependency build
 helm upgrade --install --atomic -n momo-store momo-store . --set backend.image.tag=latest --set frontend.image.tag=latest

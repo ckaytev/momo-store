@@ -31,7 +31,7 @@ variable "platform_id" {
 
 variable "node_memory" {
   type        = number
-  default     = 2
+  default     = 3
 }
 
 variable "node_cores" {
