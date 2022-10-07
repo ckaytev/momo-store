@@ -91,11 +91,11 @@ kubectl get svc
 
 <img width="500" alt="image" src="https://storage.yandexcloud.net/momo-store-zateevant/monitoring/frontend.JPG">
 
-- [backend](https://grafana.momo-store.mooo.com/d/Jj0jIU4Vk/momo-store?orgId=1)
+- [backend](https://grafana.momo-store.mooo.com/d/5i5VYXVVk/momo-store?orgId=1&from=now-1h&to=now)
 
 <img width="500" alt="image" src="https://storage.yandexcloud.net/momo-store-zateevant/monitoring/backend.JPG">
 
-- [logs](https://grafana.momo-store.mooo.com/d/o6-BGgnnk/loki-kubernetes-logs?orgId=1)
+- [logs](https://grafana.momo-store.mooo.com/d/liz0yRCZz/loki-logs-dashboard?var-namespace=momo-store&var-pod=All&var-search=)
 
 <img width="500" alt="image" src="https://storage.yandexcloud.net/momo-store-zateevant/monitoring/logs.JPG">
 
